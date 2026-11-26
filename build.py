@@ -343,8 +343,12 @@ def main():
         write(folder, head(c, titles[folder], base) + topbar(c, folder) + body[folder] + footer(c))
     # 學校專用網址：首頁的副本，另外加 noindex、canonical
     extra = f'<meta name="robots" content="noindex">\n<link rel="canonical" href="{SITE}">\n'
+    # GoatCounter 預設用 canonical 的路徑（= 首頁 /），所以要明確指定 /代號/，後台才分得出是哪間學校
     for slug in SCHOOLS:
-        write(slug, head(c, '', '../', extra) + topbar(c, '') + body[''] + footer(c))
+        page = head(c, '', '../', extra) + topbar(c, '') + body[''] + footer(c)
+        page = page.replace('<script data-goatcounter=',
+                            f'<script data-goatcounter-settings=\x27{{"path": "/{slug}/"}}\x27 data-goatcounter=')
+        write(slug, page)
     # 清掉不在清單上、由這支程式產生的舊資料夾
     keep = set(SCHOOLS) | {f for f, _ in PAGES if f}
     for name in os.listdir(HERE):
