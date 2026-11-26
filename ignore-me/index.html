@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Ignore my visits</title>
+<style>
+  body { font: 16px/1.7 -apple-system, "PingFang TC", sans-serif; max-width: 520px; margin: 60px auto; padding: 0 20px; color: #1b2430; }
+  button { font: inherit; padding: 8px 16px; border-radius: 999px; border: 1px solid #1f6f7a; background: #1f6f7a; color: #fff; cursor: pointer; }
+  button.secondary { background: #fff; color: #1f6f7a; }
+  #state { font-weight: 700; }
+</style>
+</head>
+<body>
+<!-- 這一頁不放統計程式。在你自己的每個瀏覽器（Mac、手機）各開一次這個網址，之後你的瀏覽就不會被 GoatCounter 記錄 -->
+<h1>排除我自己的瀏覽</h1>
+<p>目前狀態：<span id="state"></span></p>
+<p><button id="on">在這個瀏覽器排除</button> <button id="off" class="secondary">恢復記錄</button></p>
+<p>每個瀏覽器、每台裝置要各設定一次；清除瀏覽資料後要重新設定。</p>
+<p><a href="../">回首頁</a></p>
+<script>
+  const show = () => {
+    let v = null;
+    try { v = localStorage.getItem('skipgc'); } catch (e) {}
+    document.getElementById('state').textContent = v === 't' ? '已排除（不會記錄）' : '會記錄';
+  };
+  document.getElementById('on').onclick = () => { try { localStorage.setItem('skipgc', 't'); } catch (e) {} show(); };
+  document.getElementById('off').onclick = () => { try { localStorage.removeItem('skipgc'); } catch (e) {} show(); };
+  show();
+</script>
+</body>
+</html>
